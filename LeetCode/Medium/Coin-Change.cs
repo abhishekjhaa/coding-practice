@@ -60,6 +60,37 @@ public class Solution {
         //if(amount<1) return 0;
         //return helper(coins, amount, new int[amount]);
     }
+
+    public int CoinChangeBFS(int[] coins, int amount) 
+    {
+        var q = new Queue<(int, int)>();
+        var count = 0;
+        var sum = amount;
+        var t = (sum, count);
+        q.Enqueue(t);
+        var visited = new bool[amount+1];
+        while (q.Count > 0)
+        {
+            t = q.Dequeue();
+            sum = t.sum;
+            count = t.count;
+            if(t.sum == 0)
+            {
+                return t.count;
+            }
+            //Console.WriteLine(sum);
+            if(sum >= 0 && !visited[sum])
+            {
+                visited[sum] = true;
+                foreach(var coin in coins)
+                {
+                    q.Enqueue((sum-coin, count+1));
+                }
+            }
+        }
+        
+        return -1;
+    }
     
     private int helper(int[] coins, int rem, int[] count) { // rem: remaining coins after the last step; count[rem]: minimum number of coins to sum up to rem
     if(rem<0) return -1; // not valid
