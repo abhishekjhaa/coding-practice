@@ -74,4 +74,4 @@ class Solution(object):
                     inDegree[dc] = inDegree[dc] - 1
                     if inDegree[dc] == 0:
                         q.append(dc)
-        return n == 0;
+        return n == 0
