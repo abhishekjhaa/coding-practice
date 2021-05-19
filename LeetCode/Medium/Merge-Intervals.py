@@ -39,7 +39,6 @@ class Solution(object):
             return intervals
         i = 1
         intervals.sort()
-        print intervals
         while i < len(intervals):
             f00 = intervals[i-1][0]
             f01 = intervals[i-1][1]
