@@ -31,6 +31,84 @@ The substring with start index = 1 is "ba", which is an anagram of "ab".
 The substring with start index = 2 is "ab", which is an anagram of "ab".
 */
 
+public class Solution2 {
+    public IList<int> FindAnagrams(string s, string p) {
+        var freq = new Dictionary<char, int>();
+        for(var k = 0; k < p.Length; k++)
+        {
+            freq[p[k]] = freq.GetValueOrDefault(p[k], 0) + 1;
+        }
+        
+        var i = 0;
+        var j = 0;
+        var result = new List<int>();
+        while(j < s.Length)
+        {
+            // check if the character is a part of other string
+            // if yes, decrement the frequency counter
+            if(freq.ContainsKey(s[j]))
+            {
+                freq[s[j]]--;
+            }
+            else
+            {
+                while(i <= j)
+                {
+                    if(freq.ContainsKey(s[i]))
+                    {
+                        freq[s[i]]++;
+                    }
+                    
+                    i++;
+                }
+            }
+            
+            // check if the length between i & j is length of other string
+                // if yes check the frequency of all keys to be zero
+                    // if yes add the i index to result and 
+                        // check while i and j+1 index character matches 
+                            // if yes then increment the i and add i to the result 
+            if(j - i == p.Length - 1)
+            {
+                if(CheckForZeros(freq))
+                {
+                    result.Add(i);
+                    while(j < s.Length - 1 && s[i] == s[j + 1])
+                    {
+                        i++;
+                        result.Add(i);
+                        j++;
+                    }
+                }
+                
+                if(freq.ContainsKey(s[i]))
+                {
+                    freq[s[i]]++;
+                }
+
+                i++;
+            }
+            
+            j++;
+        }
+        
+        return result;
+    }
+    
+    private bool CheckForZeros(Dictionary<char, int> freq)
+    {
+        foreach(var key in freq.Keys)
+        {
+            if(freq[key] != 0)
+            {
+                return false;
+            }
+        }
+        
+        return  true;
+    }
+}
+
 public class Solution {
     public IList<int> FindAnagrams(string s, string p) {
         //return MySolution(s, p);        
@@ -157,3 +235,4 @@ public class Solution {
         return visitedp;
     }
 }
+
